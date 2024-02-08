@@ -19,10 +19,6 @@ class EmailErrorState extends LoginState{
   EmailErrorState({required super.email, required super.password});
 }
 
-class PasswordLengthErrorState extends LoginState{
-  PasswordLengthErrorState({required super.email, required super.password});
-}
-
 
 class loginSuccessfulState extends LoginState{
   loginSuccessfulState({required super.email, required super.password});

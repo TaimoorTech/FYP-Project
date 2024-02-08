@@ -20,18 +20,18 @@ class InternetDisconnectionScreen extends StatelessWidget {
             children: [
               Image.asset(Constants.wifiDisconnectedIcon,
                   height: 100, width: 100, fit: BoxFit.cover),
-              SizedBox(height: 30),
+              SizedBox(height: 15),
               Text(Constants.noInternetDetectedText ,
                 style: TextStyle(
                     color: Colors.red,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 5),
               Text( Constants.checkInternetConnectionText,
                 style: TextStyle(
                     color: Colors.red,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold),
               ),
             ],

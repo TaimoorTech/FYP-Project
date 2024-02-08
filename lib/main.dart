@@ -2,10 +2,17 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fyp_project/bloc/internetBloc/internetCubit.dart';
+import 'package:fyp_project/dataSources/localDataSource/loginHive/userDatabase.dart';
+import 'package:fyp_project/dataSources/localDataSource/loginHive/userHiveBox.dart';
 import 'package:fyp_project/routes/routerApp.dart';
 import 'package:fyp_project/utils/constants.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserDatabaseAdapter());
+  userBox = await Hive.openBox<UserDatabase>('userBox');
   runApp(const MyApp());
 }
 

@@ -5,7 +5,7 @@ class Constants {
   static const String splashScreenTitle = "SafeNav";
 
   //Internet Connection Error
-  static const String noInternetDetectedText = "No Internet Connection Detected !!!";
+  static const String noInternetDetectedText = "No Internet Connection Detected!!!";
   static const String checkInternetConnectionText = "Please Check your Internet Connection";
 
   //registerScreenAlertDialog
@@ -20,8 +20,10 @@ class Constants {
   static const String passwordLengthErrorText = "Password Length must be equal or greater than 8...";
   static const String passwordNotMatchText = "Password does not match...";
   static const String userSuccessfullyRegistrationText = "User Successfully Registered...";
+  static const String userUnSuccessfullyRegistrationText = "User Registration Failed...";
   static const String userSigningInText = "Signing In...";
   static const String userSuccessfullyLoggingText = "User Successfully Logged In...";
+  static const String userUnSuccessfullyLoggingText = "Login Failed. Wrong Email or Username...";
   static const String userLoginInText = "Logging In...";
 
   //screenTexts

@@ -55,6 +55,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    emailTextController.text = "";
+    passwordTextController.text = "";
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
@@ -93,7 +101,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 30,
                       ),
                       TextFormField(
-                        // autofocus: true,
+                        keyboardType: TextInputType.emailAddress,
+                        maxLength: 35,
                         maxLines: 1,
                         controller: emailTextController,
                         decoration: const InputDecoration(
@@ -102,13 +111,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             labelText: Constants.emailTextField,
                             suffixIcon: Icon(Icons.email_sharp),
                             suffixIconColor: Colors.black),
-                        onChanged: (val) => {email = val},
+                        onChanged: (val) => {email = val.trim()},
                       ),
                       const SizedBox(
                         height: 15,
                       ),
                       TextFormField(
-                        // autofocus: true,
+                        keyboardType: TextInputType.visiblePassword,
+                        maxLength: 25,
                         maxLines: 1,
                         obscureText: passwordVisible,
                         controller: passwordTextController,
@@ -129,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           ),
                         ),
-                        onChanged: (val) => {password = val},
+                        onChanged: (val) => {password = val.trim()},
                       ),
                       SizedBox(height: 60),
                       Container(
@@ -143,16 +153,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Util.errorSnackBar(context, Constants.emptyFieldErrorText);
                               } else if (state is EmailErrorState) {
                                 Util.errorSnackBar(context, Constants.correctEmailErrorText);
-                              } else if (state is PasswordLengthErrorState) {
-                                Util.errorSnackBar(context, Constants.passwordLengthErrorText);
                               } else if (state is loginSuccessfulState) {
-                                state.email = " ";
-                                state.password = " ";
                                 Util.submittedSnackBar(context, Constants.userSuccessfullyLoggingText);
                                 await Future.delayed(Duration(seconds: 2));
                                 Util.submittedSnackBar(context, Constants.userLoginInText);
                                 await Future.delayed(Duration(seconds: 2));
                                 Navigator.pushNamed(context, Constants.homeScreenPath); //home Screen
+                              } else if (state is loginUnSuccessfulState){
+                                Util.errorSnackBar(context, Constants.userUnSuccessfullyLoggingText);
                               }
                             },
                             child: ElevatedButton(

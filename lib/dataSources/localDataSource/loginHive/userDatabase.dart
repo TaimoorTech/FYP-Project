@@ -34,8 +34,7 @@ class UserDatabase{
 
   }
 
-  static Future<List<User>> getUser() async {
-    // final Map<dynamic, dynamic> result = taskBox.g;
+  static List<User> getUser() {
     final result = userBox.toMap().map(
           (k, e) => MapEntry(
           k.toString(), UserDatabase.conversion(e)
@@ -43,7 +42,6 @@ class UserDatabase{
     );
     List<Map<String, dynamic>> userDetails = [];
     result.values.forEach((v) => userDetails.add(v));
-    // taskBox.ge
     return userDetails.map(User.fromMap).toList();
   }
 
