@@ -1,9 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:fyp_project/dataSources/localDatabase/sqflite.dart';
 import 'package:fyp_project/pages/loginScreen.dart';
-import 'package:hive/hive.dart';
-
-import '../../dataSources/localDataSource/loginHive/userDatabase.dart';
-import '../../dataSources/localDataSource/loginHive/userHiveBox.dart';
 import '../../modelClasses/userModel.dart';
 
 part 'loginStates.dart';
@@ -11,6 +8,8 @@ part 'loginStates.dart';
 class LoginCubit extends Cubit<LoginState>{
 
   LoginCubit() : super(LoginState(email: '', password: ''));
+
+
 
 
   void validateUserLogging(String email, String password) async {
@@ -21,7 +20,7 @@ class LoginCubit extends Cubit<LoginState>{
       emit(EmailErrorState(email: email, password: password));
     }
     else{
-      List<User> userDetailsList = UserDatabase.getUser();
+      List<User> userDetailsList = await SQLHelper.getAllItems();
       if(userDetailsList.isEmpty){
         emit(loginUnSuccessfulState(email: email, password: password));
       }

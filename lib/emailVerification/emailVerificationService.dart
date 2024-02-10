@@ -8,15 +8,12 @@ import 'package:mailer/smtp_server.dart';
 class EmailVerificationService {
 
   // Replace these values with your own email configuration
-  static const String _username = 'irtitaimhackathon23@gmail.com';
-  static const String _password = 'htvc gzgy gbce vltq';
+  static const String _username = 'safenav24@gmail.com';
+  static const String _password = 'vfuj jtml zblw ugtg';
   static const String _host = 'localhost';
   static const int _port = 44418;
 
   static Future<void> sendVerificationCode(BuildContext context, String recipientEmail, String verificationCode) async {
-    // final smtpServer = SmtpServer(_host, port: _port,
-    //     username: _username, password: _password);
-
     final smtpServer = gmail(_username, _password);
 
     final message = Message()

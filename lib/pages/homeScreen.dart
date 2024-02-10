@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fyp_project/bloc/homeBloc/homeCubit.dart';
 import 'package:fyp_project/bloc/internetBloc/internetCubit.dart';
-import 'package:fyp_project/dataSources/localDataSource/loginHive/userDatabase.dart';
-import 'package:fyp_project/dataSources/localDataSource/loginHive/userHiveBox.dart';
 import 'package:fyp_project/pages/InternetDisconnetionScreen.dart';
+import 'package:fyp_project/utils/util.dart';
 
+import '../modelClasses/userModel.dart';
 import '../utils/constants.dart';
 import '../utils/enums.dart';
 import 'drawerHomeScreen.dart';
@@ -18,29 +19,29 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late String loggedEmail;
 
   Future<bool> _onBackPressed(BuildContext context) async {
     bool exit = await showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(Constants.dialogTitle),
-        content: const Text(Constants.dialogContent),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text(Constants.dialogTextNo,
-                style: TextStyle(color: Colors.green)),
+      builder: (context) =>
+          AlertDialog(
+            title: const Text(Constants.dialogTitle),
+            content: const Text(Constants.dialogContent),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text(Constants.dialogTextNo,
+                    style: TextStyle(color: Colors.green)),
+              ),
+              TextButton(
+                onPressed: () => SystemNavigator.pop(),
+                child: const Text(
+                  Constants.dialogTextYes,
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => SystemNavigator.pop(),
-            child: const Text(
-              Constants.dialogTextYes,
-              style: TextStyle(color: Colors.red),
-            ),
-          ),
-        ],
-      ),
     );
 
     if (exit == true) {
@@ -51,9 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void getLoggedInfo(){
-    var userDetails = UserDatabase.getUser();
-    loggedEmail = userDetails[0].email;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<HomeCubit>().getDetails();
   }
 
   @override
@@ -68,15 +71,24 @@ class _HomeScreenState extends State<HomeScreen> {
               (state.connectionType == ConnectionType.Wifi ||
                   state.connectionType == ConnectionType.Mobile)) {
             return Scaffold(
-              drawer: homeDrawer(loggedEmail: loggedEmail),
-              body: Column(
-                children: [
-                  Center(child: Text("Home Screen", style: TextStyle(fontSize: 30))),
-                ],
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                title: Container(
+                  margin: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.15),
+                  child: Text("Home Screen", style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w900,
+                  )),
+                ),
+              ),
+              drawer: BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  return homeDrawer(loggedEmail: state.email);
+                },
               ),
             );
           }
-          else{
+          else {
             return InternetDisconnectionScreen();
           }
         },

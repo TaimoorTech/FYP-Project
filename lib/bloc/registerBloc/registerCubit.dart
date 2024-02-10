@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:fyp_project/dataSources/localDataSource/loginHive/userDatabase.dart';
+import 'package:fyp_project/dataSources/localDatabase/sqflite.dart';
 
 import '../../modelClasses/userModel.dart';
 
@@ -25,8 +25,8 @@ class RegisterCubit extends Cubit<RegisterState>{
     }
     else{
       User user = User(email: email, password: password);
-      await UserDatabase.clearUser();
-      int res = await UserDatabase.addUser(user);
+      await SQLHelper.deleteItem(email);
+      int res = await SQLHelper.createItem(user);
       if(res==1){
         emit(SubmittedState(username: username, email: email, password: password, confirmPassword: confirmPassword));
       }

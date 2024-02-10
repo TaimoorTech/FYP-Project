@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fyp_project/bloc/homeBloc/homeCubit.dart';
 import 'package:fyp_project/bloc/loginBloc/loginCubit.dart';
 import 'package:fyp_project/bloc/registerBloc/registerCubit.dart';
 import 'package:fyp_project/pages/emailVerificationScreen.dart';
@@ -18,7 +19,8 @@ class RouterApp {
       case Constants.defaultScreenPath:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
       case Constants.emailVerificationScreenPath:
-        return MaterialPageRoute(builder: (_) => const EmailVerificationScreen());
+        return MaterialPageRoute(
+            builder: (_) => const EmailVerificationScreen());
       case Constants.registerScreenPath:
         return MaterialPageRoute(builder: (_) =>
             BlocProvider(
@@ -31,7 +33,11 @@ class RouterApp {
               child: LoginScreen(),
             ));
       case Constants.homeScreenPath:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return MaterialPageRoute(builder: (_) =>
+            BlocProvider(
+              create: (context) => HomeCubit(),
+              child: HomeScreen(),
+            ));
       default:
         return null;
     }

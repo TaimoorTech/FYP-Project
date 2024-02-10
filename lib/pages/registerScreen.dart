@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fyp_project/bloc/internetBloc/internetCubit.dart';
 import 'package:fyp_project/bloc/registerBloc/registerCubit.dart';
-import 'package:fyp_project/dataSources/localDataSource/loginHive/userHiveBox.dart';
 import 'package:fyp_project/pages/InternetDisconnetionScreen.dart';
 
 import '../modelClasses/userModel.dart';
@@ -189,10 +188,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               } else if (state is PasswordMatchErrorState) {
                                 Util.errorSnackBar(context, Constants.passwordNotMatchText);
                               } else if (state is SubmittedState) {
-                                nameTextController.text="";
-                                emailTextController.text="";
-                                passwordTextController.text="";
-                                confirmPasswordTextController.text="";
                                 Util.submittedSnackBar(context, Constants.userSuccessfullyRegistrationText);
                                 await Future.delayed(Duration(seconds: 2));
                                 Util.submittedSnackBar(context, Constants.userSigningInText);
