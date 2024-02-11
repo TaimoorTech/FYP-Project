@@ -4,10 +4,12 @@ import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fyp_project/bloc/internetBloc/internetCubit.dart';
+import 'package:fyp_project/dataSources/cloudDatabase/signupDatabase.dart';
 import 'package:fyp_project/pages/registerScreen.dart';
 
 import '../bloc/registerBloc/registerCubit.dart';
 import '../emailVerification/emailVerificationService.dart';
+import '../modelClasses/userModel.dart';
 import '../utils/constants.dart';
 import '../utils/enums.dart';
 import '../utils/util.dart';
@@ -196,20 +198,47 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                 child: Text(Constants.confirmVerificationCodeButtonText,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 20)),
-                                onPressed: () {
-                                  if(verificationCode==generatedVerificationCode){
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => BlocProvider(
-                                          create: (context) => RegisterCubit(),
-                                          child: RegisterScreen(confirmed_email: emailTextController.text),
-                                        )
-                                    ));//Register Screen
+                                onPressed: () async {
+                                  bool userExisted = false;
+                                  List<User> list = await SignupDatabase.fetchAllData();
+                                  if(emailTextController.text.trim().toString()=="" ||
+                                    verificationCodeTextController.text.trim().toString()==""
+                                  ){
+                                    Util.errorSnackBar(context, Constants.emptyFieldErrorText);
                                   }
                                   else{
-                                    Util.errorSnackBar(context, 'Wrong Verification code');
+                                    for(final row in list){
+                                      if(emailTextController.text.trim()==row.email.trim()){
+                                        userExisted=true;
+                                        break;
+                                      }
+                                    }
+                                    if(userExisted==true){
+                                      Util.errorSnackBar(context, Constants.userAlreadyExists);
+                                      setState(() {
+                                        emailTextController.text="";
+                                        email="";
+                                        verificationCodeTextController.text="";
+                                        verificationCode="";
+                                        generatedVerificationCode="";
+                                      });
+                                    }
+                                    else if( (userExisted==false) &&
+                                        (verificationCode==generatedVerificationCode)
+                                    ){
+                                      Util.submittedSnackBar(context, Constants.confirmedVerificationCode);
+                                      Future.delayed(Duration(seconds: 2));
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context) => BlocProvider(
+                                            create: (context) => RegisterCubit(),
+                                            child: RegisterScreen(confirmed_email: emailTextController.text),
+                                          )
+                                      ));//Register Screen
+                                    }
+                                    else{
+                                      Util.errorSnackBar(context, Constants.wrongVerificationCode);
+                                    }
                                   }
-                                  // verifyOTP(context);
-
                                 }),
                           ),
                         ),

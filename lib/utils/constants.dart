@@ -8,6 +8,20 @@ class Constants {
   static const String noInternetDetectedText = "No Internet Connection Detected!!!";
   static const String checkInternetConnectionText = "Please Check your Internet Connection";
 
+  //Verification Code
+  static const String confirmedVerificationCode = "Verification Code Confirmed...";
+  static const String wrongVerificationCode = "Wrong Verification Code...";
+  static const String userAlreadyExists = "User Already Exists...";
+  static const String verificationCodeSent = "Verification Code Sent...";
+  static const String verificationCodeError = "Error in Sending Verification Code...";
+
+  //PostgresSQL credentials
+  static const String dbHostForEmulator = "ep-icy-surf-a1ayxu0k.ap-southeast-1.aws.neon.tech";
+  static const int port = 5432;
+  static const String postgresDB = "UserSignUp";
+  static const String dbUsername = "safenav24";
+  static const String dbPassword = "3Jxd4LoPNrHa";
+
   //registerScreenAlertDialog
   static const String dialogTitle = "Are you sure?";
   static const String dialogContent = "Do you want to exit an App";

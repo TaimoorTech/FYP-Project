@@ -5,8 +5,9 @@ import 'package:fyp_project/utils/constants.dart';
 
 class homeDrawer extends StatelessWidget {
   String loggedEmail;
+  String loggedUsername;
 
-  homeDrawer({Key? key, required this.loggedEmail}) : super(key: key);
+  homeDrawer({Key? key, required this.loggedUsername, required this.loggedEmail}) : super(key: key);
 
 
   @override
@@ -28,7 +29,7 @@ class homeDrawer extends StatelessWidget {
                   color: Colors.white
                 ),
                 margin: EdgeInsets.zero,
-                accountName: const Text("Taimoor",
+                accountName: Text(loggedUsername,
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                 accountEmail: Text(loggedEmail,
                     style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15))

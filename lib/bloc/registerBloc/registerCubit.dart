@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:fyp_project/dataSources/cloudDatabase/signupDatabase.dart';
 import 'package:fyp_project/dataSources/localDatabase/sqflite.dart';
 
 import '../../modelClasses/userModel.dart';
@@ -24,10 +25,11 @@ class RegisterCubit extends Cubit<RegisterState>{
       emit(PasswordMatchErrorState(username: username, email: email, password: password, confirmPassword: confirmPassword));
     }
     else{
-      User user = User(email: email, password: password);
+      User user = User(username: username, email: email, password: password);
       await SQLHelper.deleteItem(email);
+      int onlineRes = await SignupDatabase.addData(user);
       int res = await SQLHelper.createItem(user);
-      if(res==1){
+      if( (res==1) && (onlineRes==1) ){
         emit(SubmittedState(username: username, email: email, password: password, confirmPassword: confirmPassword));
       }
       else{

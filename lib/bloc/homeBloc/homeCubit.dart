@@ -6,12 +6,13 @@ part 'homeStates.dart';
 
 class HomeCubit extends Cubit<HomeState> {
 
-  HomeCubit() : super(HomeState(email: ''));
+  HomeCubit() : super(HomeState(email: '', username: ''));
 
   void getDetails() async {
     List<User> list = await SQLHelper.getAllItems();
     String email = list[0].email;
-    emit(GetDetailsState(email: email));
+    String username = list[0].username;
+    emit(GetDetailsState(username: username, email: email));
   }
 
 }

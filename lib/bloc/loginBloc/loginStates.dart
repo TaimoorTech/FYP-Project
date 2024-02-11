@@ -1,10 +1,12 @@
 part of 'loginCubit.dart';
 
 class LoginState{
+  String username;
   String email;
   String password;
 
   LoginState({
+    required this.username,
     required this.email,
     required this.password,
   });
@@ -12,18 +14,18 @@ class LoginState{
 }
 
 class EmptyFieldState extends LoginState{
-  EmptyFieldState({required super.email, required super.password});
+  EmptyFieldState({required super.username, required super.email, required super.password});
 }
 
 class EmailErrorState extends LoginState{
-  EmailErrorState({required super.email, required super.password});
+  EmailErrorState({required super.username, required super.email, required super.password});
 }
 
 
 class loginSuccessfulState extends LoginState{
-  loginSuccessfulState({required super.email, required super.password});
+  loginSuccessfulState({required super.username, required super.email, required super.password});
 }
 
 class loginUnSuccessfulState extends LoginState{
-  loginUnSuccessfulState({required super.email, required super.password});
+  loginUnSuccessfulState({required super.username, required super.email, required super.password});
 }

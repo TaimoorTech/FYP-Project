@@ -9,7 +9,7 @@ import 'package:fyp_project/utils/util.dart';
 import '../modelClasses/userModel.dart';
 import '../utils/constants.dart';
 import '../utils/enums.dart';
-import 'drawerHomeScreen.dart';
+import '../widgets/drawerHomeScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               drawer: BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
-                  return homeDrawer(loggedEmail: state.email);
+                  return homeDrawer(loggedUsername: state.username,loggedEmail: state.email);
                 },
               ),
             );

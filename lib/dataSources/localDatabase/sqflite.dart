@@ -6,6 +6,7 @@ class SQLHelper {
   static Future<void> createTables(sql.Database database) async{
     await database.execute(
         """CREATE TABLE user(
+      username Text,  
       email Text,
       password Text
       )

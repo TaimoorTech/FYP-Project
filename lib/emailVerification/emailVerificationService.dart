@@ -5,6 +5,8 @@ import 'package:fyp_project/utils/util.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
+import '../utils/constants.dart';
+
 class EmailVerificationService {
 
   // Replace these values with your own email configuration
@@ -24,9 +26,9 @@ class EmailVerificationService {
 
     try {
       final sendReport = await send(message, smtpServer);
-      Util.submittedSnackBar(context, 'Message sent: ' + sendReport.toString());
+      Util.submittedSnackBar(context, Constants.verificationCodeSent);
     } on MailerException catch (e) {
-      Util.errorSnackBar(context, 'Message not sent. Error: $e');
+      Util.errorSnackBar(context, Constants.verificationCodeError);
     }
   }
 
