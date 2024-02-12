@@ -39,6 +39,7 @@ class Constants {
   static const String userSuccessfullyLoggingText = "User Successfully Logged In...";
   static const String userUnSuccessfullyLoggingText = "Login Failed. Wrong Email or Username...";
   static const String userLoginInText = "Logging In...";
+  static const String userLogOutText = "Logging Out...";
 
   //screenTexts
   static const String createAccountText= "Create Account";
@@ -47,10 +48,13 @@ class Constants {
   static const String doNotHaveAccountText = "Don't have a SafeNav Account?";
   static const String registerNowText = "Register Now";
   static const String loginText = "Login";
+  static const String homeScreenText = "Home Screen";
+  static const String homeDrawerOptionsText = "Options";
 
   //ButtonTexts
   static const String registerButtonText = "Register";
   static const String loginButtonText = "Login";
+  static const String logOutButtonText = "Log Out";
   static const String getVerificationCodeButtonText = "Get Verification Code";
   static const String confirmVerificationCodeButtonText = "Confirm Verification Code";
 

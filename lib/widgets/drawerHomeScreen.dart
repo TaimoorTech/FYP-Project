@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fyp_project/dataSources/localDatabase/sqflite.dart';
 import 'package:fyp_project/utils/constants.dart';
 
+import '../utils/util.dart';
+
 class homeDrawer extends StatelessWidget {
   String loggedEmail;
   String loggedUsername;
@@ -42,14 +44,15 @@ class homeDrawer extends StatelessWidget {
             ),
             const Padding(
               padding: EdgeInsets.all(10.0),
-              child: Text("Options",
+              child: Text(Constants.homeDrawerOptionsText,
                   style: TextStyle( fontWeight: FontWeight.bold, fontSize: 20)),
             ),
             ListTile(
               leading: Icon(Icons.logout_sharp),
               title:
-              const Text("Log Out", style: TextStyle(fontSize: 15, color: Colors.black)),
+              const Text(Constants.logOutButtonText, style: TextStyle(fontSize: 15, color: Colors.black)),
               onTap: () async {
+                Util.submittedSnackBar(context, Constants.userLogOutText);
                 await SQLHelper.deleteItem(loggedEmail);
                 Navigator.pushNamed(context, Constants.loginScreenPath);
               },

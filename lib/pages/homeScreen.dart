@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Colors.white,
                 title: Container(
                   margin: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.15),
-                  child: Text("Home Screen", style: TextStyle(
+                  child: Text(Constants.homeScreenText, style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w900,
                   )),
