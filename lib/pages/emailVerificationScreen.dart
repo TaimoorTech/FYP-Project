@@ -13,7 +13,7 @@ import '../modelClasses/userModel.dart';
 import '../utils/constants.dart';
 import '../utils/enums.dart';
 import '../utils/util.dart';
-import 'InternetDisconnetionScreen.dart';
+import 'InternetDisconnectionScreen.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});

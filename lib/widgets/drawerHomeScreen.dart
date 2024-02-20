@@ -27,6 +27,7 @@ class homeDrawer extends StatelessWidget {
                 color: Colors.white
               ),
               child: UserAccountsDrawerHeader(
+                currentAccountPicture: Icon(CupertinoIcons.profile_circled, size: 70,),
                 decoration: BoxDecoration(
                   color: Colors.white
                 ),

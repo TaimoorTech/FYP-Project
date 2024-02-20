@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fyp_project/bloc/internetBloc/internetCubit.dart';
 import 'package:fyp_project/bloc/registerBloc/registerCubit.dart';
-import 'package:fyp_project/pages/InternetDisconnetionScreen.dart';
+import 'package:fyp_project/pages/InternetDisconnectionScreen.dart';
 
 import '../modelClasses/userModel.dart';
 import '../utils/constants.dart';
