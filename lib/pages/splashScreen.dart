@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fyp_project/dataSources/localDatabase/sqflite.dart';
-import 'package:fyp_project/pages/demoScreen.dart';
 import 'package:fyp_project/utils/constants.dart';
 import 'package:postgres/postgres.dart';
 
@@ -34,11 +33,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           Navigator.of(context).pushNamed(Constants.loginScreenPath);
       }else{
           Util.submittedSnackBar(context, Constants.userLoginInText);
-          // Navigator.of(context).pushNamed(Constants.homeScreenPath);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Demo()),
-          );
+          Navigator.of(context).pushNamed(Constants.homeScreenPath);
+
       }
     });
   }

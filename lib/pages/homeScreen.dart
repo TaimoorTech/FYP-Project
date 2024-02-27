@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:geocoding/geocoding.dart';
 import 'package:fyp_project/utils/util.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void makeSuggestion(String input) async {
-    String googlePlacesApiKey = 'AIzaSyAc_i44UKOivUVWAAzvRd73W6VKfjRNwLI';
+    String googlePlacesApiKey = 'AIzaSyCZsKhh0DgnmgB62UlRxTQMgCHw2LPivgg';
     String groundURL ='https://maps.googleapis.com/maps/api/place/autocomplete/json';
     String request = '$groundURL?input=$input&key=$googlePlacesApiKey&sessiontoken=$tokenForSession';
 
@@ -182,7 +182,6 @@ class _HomeScreenState extends State<HomeScreen> {
               });
             },
           ),
-          listLength==0 ?
           Expanded(child: ListView.builder(
               itemCount: listForPlaces.length,
               itemBuilder: (context, index){
@@ -200,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
           )
-          ) : Container(),
+          ),
           const SizedBox(height: 20),
           DropdownButtonFormField(
               value: -1,
@@ -277,22 +276,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       loggedUsername: state.username, loggedEmail: state.email);
                 },
               ),
-              floatingActionButton: Container(
-                margin: EdgeInsets.only(top: 30),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: FloatingActionButton(
-                    backgroundColor: Colors.white,
-                    onPressed: () async {
-                      _selectLocationController.text='';
-                      showForm();
-                    },
-                    child: const Icon(
-                        Icons.search_sharp, color: Colors.green,
-                    ),
-                  ),
-                ),
-              ),
+              // floatingActionButton: Container(
+              //   margin: EdgeInsets.only(top: 30),
+              //   child: Align(
+              //     alignment: Alignment.topRight,
+              //     child: FloatingActionButton(
+              //       backgroundColor: Colors.white,
+              //       onPressed: () async {
+              //         _selectLocationController.text='';
+              //         showForm();
+              //       },
+              //       child: const Icon(
+              //           Icons.search_sharp, color: Colors.green,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               body: GoogleMap(
                 circles: _circles,
                 markers: _markers,
