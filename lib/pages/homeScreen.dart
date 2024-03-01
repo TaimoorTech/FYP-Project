@@ -67,6 +67,29 @@ class _HomeScreenState extends State<HomeScreen> {
     return circles;
   }
 
+
+  Set<Marker> _createMarker(){
+    Set<Marker> markers = {};
+    for(int i=0; i<_coordinates.length; i++){
+      markers.add(Marker(
+          markerId: MarkerId(i.toString()),
+          position: _coordinates[i],
+          infoWindow: _getInfoWindow(_crimeScores[i])
+      ));
+    }
+    return markers;
+  }
+
+  InfoWindow _getInfoWindow(double crimeScore){
+    if (crimeScore <= 1) {
+      return InfoWindow(title: "Low Risk");
+    } else if (crimeScore <= 4) {
+      return InfoWindow(title: "Medium Risk");
+    } else {
+      return InfoWindow(title: "High Risk");
+    }
+  }
+
   Color _getCircleColor(double crimeScore) {
     if (crimeScore <= 1) {
       return Colors.green.withOpacity(0.5);
@@ -141,6 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     zoom: 14.0,
                   ),
                   circles: _createCircles(),
+                  markers: _createMarker(),
                 ),
               );
             } else {
