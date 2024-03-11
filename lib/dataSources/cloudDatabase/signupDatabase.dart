@@ -61,4 +61,9 @@ class SignupDatabase {
       return userLists;
     }
   }
+
+  static Future<void> deleteAllRows() async {
+    await connection.query('DELETE FROM Users');
+    print('All rows deleted from table Users');
+  }
 }

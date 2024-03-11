@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:fyp_project/dataSources/cloudDatabase/signupDatabase.dart';
 import 'package:fyp_project/dataSources/localDatabase/sqflite.dart';
-import 'package:fyp_project/pages/loginScreen.dart';
 import '../../modelClasses/userModel.dart';
+import '../../utils/util.dart';
 
 part 'loginStates.dart';
 
@@ -28,8 +28,9 @@ class LoginCubit extends Cubit<LoginState>{
       else{
         int res = 0;
         for(final row in userDetailsList){
+          String hashedPassword = Util.hashPassword(password);
           if(row.email.trim()==email.trim()
-              && row.password.trim()==password.trim()){
+              && row.password.trim()==hashedPassword.trim()){
             res=1;
           }
           if(res==1){

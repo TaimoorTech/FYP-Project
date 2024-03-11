@@ -1,14 +1,17 @@
+import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:fyp_project/dataSources/cloudDatabase/signupDatabase.dart';
 import 'package:fyp_project/dataSources/localDatabase/sqflite.dart';
-
+import 'package:crypto/crypto.dart';
 import '../../modelClasses/userModel.dart';
+import '../../utils/util.dart';
 
 part 'registerStates.dart';
 
 class RegisterCubit extends Cubit<RegisterState>{
 
   RegisterCubit() : super(RegisterState(username: '', email: '', password: '', confirmPassword: ''));
+
 
 
   Future<void> validateRegisterUser(String username, String email, String password, String confirmPassword) async {
@@ -25,7 +28,9 @@ class RegisterCubit extends Cubit<RegisterState>{
       emit(PasswordMatchErrorState(username: username, email: email, password: password, confirmPassword: confirmPassword));
     }
     else{
-      User user = User(username: username, email: email, password: password);
+      String hashedPassword = Util.hashPassword(password);
+
+      User user = User(username: username, email: email, password: hashedPassword);
       await SQLHelper.deleteItem(email);
       int onlineRes = await SignupDatabase.addData(user);
       int res = await SQLHelper.createItem(user);
