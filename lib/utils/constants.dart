@@ -55,6 +55,8 @@ class Constants {
   static const String registerButtonText = "Register";
   static const String loginButtonText = "Login";
   static const String logOutButtonText = "Log Out";
+  static const String profileButtonText = "Profile";
+  static const String reportButtonText = "Report Complaint";
   static const String getVerificationCodeButtonText = "Get Verification Code";
   static const String confirmVerificationCodeButtonText = "Confirm Verification Code";
 
@@ -76,4 +78,5 @@ class Constants {
   static const String registerScreenPath = '/register';
   static const String loginScreenPath = '/login';
   static const String homeScreenPath = '/home';
+  static const String profileScreenPath = "/profile";
 }

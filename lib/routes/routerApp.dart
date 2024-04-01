@@ -8,6 +8,7 @@ import 'package:fyp_project/bloc/registerBloc/registerCubit.dart';
 import 'package:fyp_project/pages/emailVerificationScreen.dart';
 import 'package:fyp_project/pages/homeScreen.dart';
 import 'package:fyp_project/pages/loginScreen.dart';
+import 'package:fyp_project/pages/profileScreen.dart';
 import 'package:fyp_project/pages/registerScreen.dart';
 import 'package:fyp_project/pages/splashScreen.dart';
 import 'package:fyp_project/utils/constants.dart';
