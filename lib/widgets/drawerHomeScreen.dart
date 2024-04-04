@@ -64,8 +64,9 @@ class homeDrawer extends StatelessWidget {
             title: const Text(Constants.reportButtonText,
                 style: TextStyle(fontSize: 15, color: Colors.black)
             ),
-            onTap: (){},
-
+            onTap: (){
+              Navigator.pushNamed(context, Constants.reportComplaintScreenPath);
+            },
           ),
           const SizedBox(height: 5.0,),
           ListTile(

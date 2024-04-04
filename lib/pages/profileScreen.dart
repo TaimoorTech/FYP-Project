@@ -30,21 +30,21 @@ class ProfileScreen extends StatelessWidget {
               return Scaffold(
                 appBar: AppBar(
                   centerTitle: true,
-                  title: Text(Constants.profileButtonText,
+                  title: const Text(Constants.profileButtonText,
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,
                       color: Colors.black),
                   ),
                 ),
                 body: Container(
-                      padding: EdgeInsets.only(top: 40.0, left: 20.0, right: 20.0),
+                      padding: const EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(CupertinoIcons.profile_circled, size: 100,
+                              Icon(CupertinoIcons.profile_circled, size: 100,
                                 color: Colors.black,),
                             ],
                           ),

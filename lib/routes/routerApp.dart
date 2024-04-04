@@ -10,6 +10,7 @@ import 'package:fyp_project/pages/homeScreen.dart';
 import 'package:fyp_project/pages/loginScreen.dart';
 import 'package:fyp_project/pages/profileScreen.dart';
 import 'package:fyp_project/pages/registerScreen.dart';
+import 'package:fyp_project/pages/reportComplaintScreen.dart';
 import 'package:fyp_project/pages/splashScreen.dart';
 import 'package:fyp_project/utils/constants.dart';
 
@@ -39,6 +40,8 @@ class RouterApp {
               create: (context) => HomeCubit(),
               child: HomeScreen(),
             ));
+      case Constants.reportComplaintScreenPath:
+        return MaterialPageRoute(builder: (_) => ReportComplaintScreen());
       default:
         return null;
     }

@@ -22,6 +22,13 @@ class Constants {
   static const String dbUsername = "safenav24";
   static const String dbPassword = "3Jxd4LoPNrHa";
 
+
+  static const String complaint_PGHOST='ep-icy-surf-a1ayxu0k.ap-southeast-1.aws.neon.tech';
+  static const int complaint_port = 5432;
+  static const String complaint_PGDATABASE='ComplaintDatabase';
+  static const String complaint_PGUSER='safenav24';
+  static const String complaint_PGPASSWORD='3Jxd4LoPNrHa';
+
   //registerScreenAlertDialog
   static const String dialogTitle = "Are you sure?";
   static const String dialogContent = "Do you want to exit an App";
@@ -79,4 +86,5 @@ class Constants {
   static const String loginScreenPath = '/login';
   static const String homeScreenPath = '/home';
   static const String profileScreenPath = "/profile";
+  static const String reportComplaintScreenPath = "/report";
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyp_project/dataSources/cloudDatabase/postgresComplaintConnection.dart';
 import 'package:fyp_project/dataSources/localDatabase/sqflite.dart';
 import 'package:fyp_project/utils/constants.dart';
 import 'package:postgres/postgres.dart';
@@ -26,6 +27,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           username: Constants.dbUsername, password: Constants.dbPassword,
           useSSL: true
       );
+      complaintConnection = PostgreSQLConnection(
+          Constants.complaint_PGHOST, Constants.complaint_port, Constants.complaint_PGDATABASE,
+          username: Constants.complaint_PGUSER, password: Constants.complaint_PGPASSWORD,
+          useSSL: true
+      );
       requestForDBConnectionStart(context);
 
       List<User> userDetailsList = await SQLHelper.getAllItems();
@@ -42,6 +48,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   static Future<void> requestForDBConnectionStart(BuildContext context) async {
     await connection.open().then((value) =>
         Util.submittedSnackBar(context, "Connection Establish"));
+    await complaintConnection.open().then((value) =>
+        Util.submittedSnackBar(context, "Complaint Connection Establish"));
   }
 
   @override

@@ -1,8 +1,5 @@
-
-
 import 'package:fyp_project/dataSources/cloudDatabase/postgresConnection.dart';
 import 'package:postgres/postgres.dart';
-
 import '../../modelClasses/userModel.dart';
 
 class SignupDatabase {
@@ -13,7 +10,7 @@ class SignupDatabase {
           CREATE TABLE IF NOT EXISTS Users(
           username text,
           email text,
-          password text,
+          password text
           )
         ''').then((value) => (){
         return "table created successfully";
