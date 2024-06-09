@@ -41,10 +41,13 @@ class _ReportComplaintScreenState extends State<ReportComplaintScreen> {
                     state.connectionType == ConnectionType.Mobile)) {
                 return Scaffold(
                   appBar: AppBar(
+                    iconTheme: const IconThemeData(
+                      color: Colors.green, //change your color here
+                    ),
                     centerTitle: true,
                     title: const Text(Constants.reportButtonText,
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                          color: Colors.green),
                     ),
                   ),
                   body: Container(

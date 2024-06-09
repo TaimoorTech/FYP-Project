@@ -62,7 +62,8 @@ class Constants {
   static const String registerButtonText = "Register";
   static const String loginButtonText = "Login";
   static const String logOutButtonText = "Log Out";
-  static const String profileButtonText = "Profile";
+  static const String contactSupportButtonText = "Contact Support";
+  static const String profileButtonText = "Account Settings";
   static const String reportButtonText = "Report Complaint";
   static const String getVerificationCodeButtonText = "Get Verification Code";
   static const String confirmVerificationCodeButtonText = "Confirm Verification Code";
