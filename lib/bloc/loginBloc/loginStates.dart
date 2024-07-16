@@ -1,31 +1,37 @@
 part of 'loginCubit.dart';
 
-class LoginState{
-  String username;
-  String email;
-  String password;
+enum LoginStatus {
+  initial,
+  emptyFieldError,
+  emailError,
+  loginSuccessful,
+  loginUnsuccessful,
+}
+
+class LoginState {
+  final String username;
+  final String email;
+  final String password;
+  final LoginStatus status;
 
   LoginState({
-    required this.username,
-    required this.email,
-    required this.password,
+    this.username = '',
+    this.email = '',
+    this.password = '',
+    this.status = LoginStatus.initial,
   });
 
-}
-
-class EmptyFieldState extends LoginState{
-  EmptyFieldState({required super.username, required super.email, required super.password});
-}
-
-class EmailErrorState extends LoginState{
-  EmailErrorState({required super.username, required super.email, required super.password});
-}
-
-
-class loginSuccessfulState extends LoginState{
-  loginSuccessfulState({required super.username, required super.email, required super.password});
-}
-
-class loginUnSuccessfulState extends LoginState{
-  loginUnSuccessfulState({required super.username, required super.email, required super.password});
+  LoginState copyWith({
+    String? username,
+    String? email,
+    String? password,
+    LoginStatus? status,
+  }) {
+    return LoginState(
+      username: username ?? this.username,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      status: status ?? this.status,
+    );
+  }
 }

@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fyp_project/bloc/internetBloc/internetCubit.dart';
 import 'package:fyp_project/bloc/loginBloc/loginCubit.dart';
-import 'package:fyp_project/dataSources/cloudDatabase/signupDatabase.dart';
 
 import '../utils/constants.dart';
 import '../utils/enums.dart';
@@ -26,20 +25,20 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
 
-  Future<bool> _onWillPop(BuildContext context) async {
+  Future<bool> _showBackDialog(BuildContext context) async {
     bool exit = await showDialog(
       context: context,
-      builder: (context) => new AlertDialog(
-        title: new Text(Constants.dialogTitle),
-        content: new Text(Constants.dialogContent),
+      builder: (context) => AlertDialog(
+        title: const Text(Constants.dialogTitle),
+        content: const Text(Constants.dialogContent),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: new Text(Constants.dialogTextNo, style: TextStyle(color: Colors.green)),
+            child: const Text(Constants.dialogTextNo, style: TextStyle(color: Colors.green)),
           ),
           TextButton(
             onPressed: () => SystemNavigator.pop(),
-            child: new Text(Constants.dialogTextYes, style: TextStyle(color: Colors.red),),
+            child: const Text(Constants.dialogTextYes, style: TextStyle(color: Colors.red),),
           ),
         ],
       ),
@@ -52,12 +51,10 @@ class _LoginScreenState extends State<LoginScreen> {
     else{
       return Future.value(false);
     }
-
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     emailTextController.text = "";
     passwordTextController.text = "";
@@ -65,182 +62,209 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return await _onWillPop(context);
-      },
-      child: SafeArea(child: BlocBuilder<InternetCubit, InternetState>(
-        builder: (context, state) {
-          if ((state is InternetConnected) &&
-              (state.connectionType == ConnectionType.Wifi ||
-                  state.connectionType == ConnectionType.Mobile)) {
-            return Scaffold(
-              body: Container(
-                padding: const EdgeInsets.all(20.0),
-                alignment: Alignment.topCenter,
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        child: Image.asset(Constants.appIcon,
-                            height: 60, width: 60, fit: BoxFit.cover),
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Text(Constants.loginText,
-                          style: TextStyle(
-                              color: Colors.green,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold)),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        maxLength: 35,
-                        maxLines: 1,
-                        controller: emailTextController,
-                        decoration: const InputDecoration(
-                            labelStyle:
-                                TextStyle(color: Colors.black, fontSize: 14),
-                            labelText: Constants.emailTextField,
-                            suffixIcon: Icon(Icons.email_sharp),
-                            suffixIconColor: Colors.black),
-                        onChanged: (val) => {email = val.trim()},
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      TextFormField(
-                        keyboardType: TextInputType.visiblePassword,
-                        maxLength: 25,
-                        maxLines: 1,
-                        obscureText: passwordVisible,
-                        controller: passwordTextController,
-                        decoration: InputDecoration(
-                          labelText: Constants.passwordTextField,
-                          labelStyle:
-                              TextStyle(color: Colors.black, fontSize: 14),
-                          suffixIcon: IconButton(
-                            icon: Icon(passwordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off),
-                            onPressed: () {
-                              setState(
-                                () {
-                                  passwordVisible = !passwordVisible;
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                        onChanged: (val) => {password = val.trim()},
-                      ),
-                      SizedBox(height: 60),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 34,
-                          child: BlocListener<LoginCubit, LoginState>(
-                            listener: (context, state) async {
-                              if (state is EmptyFieldState) {
-                                Util.errorSnackBar(context, Constants.emptyFieldErrorText);
-                              } else if (state is EmailErrorState) {
-                                Util.errorSnackBar(context, Constants.correctEmailErrorText);
-                              } else if (state is loginSuccessfulState) {
-                                Util.submittedSnackBar(context, Constants.userSuccessfullyLoggingText);
-                                await Future.delayed(Duration(seconds: 2));
-                                Util.submittedSnackBar(context, Constants.userLoginInText);
-                                await Future.delayed(Duration(seconds: 2));
-                                Navigator.pushNamed(context, Constants.homeScreenPath); //home Screen
-                              } else if (state is loginUnSuccessfulState){
-                                Util.errorSnackBar(context, Constants.userUnSuccessfullyLoggingText);
-                              }
-                            },
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shadowColor: Colors.green,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
-                                  elevation: 10,
-                                  backgroundColor: Colors.green,
-                                ),
-                                child: Text(Constants.loginButtonText,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20)),
-                                onPressed: () {
-                                  context
-                                      .read<LoginCubit>()
-                                      .validateUserLogging(email, password);
-                                }),
-                          ),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: ((didpop) {
+        if (didpop){
+          return;
+        }
+        _showBackDialog(context);
+      }),
+      child: SafeArea(
+        child: BlocBuilder<InternetCubit, InternetState>(
+          builder: (context, state) {
+            if ((state is InternetConnected) &&
+                (state.connectionType == ConnectionType.Wifi ||
+                    state.connectionType == ConnectionType.Mobile)) {
+              return Scaffold(
+                body: Stack(
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(Constants.backgroundImage),
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(height: 30),
-                      Container(
-                        alignment: Alignment.center,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(20.0),
+                      alignment: Alignment.topCenter,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child: SingleChildScrollView(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(Constants.doNotHaveAccountText,
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500)),
-                            SizedBox(
-                              height: 5,
+                            const SizedBox(height: 25),
+                            Container(
+                              alignment: Alignment.center,
+                              child: Image.asset(Constants.appIcon,
+                                  height: 60, width: 60, fit: BoxFit.cover),
                             ),
-                            Text(Constants.registerNowText,
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500)),
+                            const SizedBox(height: 25),
+                            const Text(
+                              'Welcome Back',
+                              style: TextStyle(
+                                fontSize: 38,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Text(
+                              'Hey! Good to see you again',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Poppins',
+                                color: Colors.grey,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 80),
+                            TextFormField(
+                              keyboardType: TextInputType.emailAddress,
+                              maxLines: 1,
+                              controller: emailTextController,
+                              decoration: const InputDecoration(
+                                labelStyle: TextStyle(fontSize: 14),
+                                labelText: Constants.emailTextField,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                                ),
+                              ),
+                              onChanged: (val) => {email = val.trim()},
+                            ),
+                            const SizedBox(height: 15),
+                            TextFormField(
+                              keyboardType: TextInputType.visiblePassword,
+                              maxLines: 1,
+                              obscureText: passwordVisible,
+                              controller: passwordTextController,
+                              decoration: InputDecoration(
+                                labelText: Constants.passwordTextField,
+                                labelStyle: const TextStyle(fontSize: 14),
+                                border: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: () {
+                                    setState(() {
+                                      passwordVisible = !passwordVisible;
+                                    });
+                                  },
+                                ),
+                              ),
+                              onChanged: (val) => {password = val.trim()},
+                            ),
+                            const SizedBox(height: 10),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {
+                                  // Add your forgot password logic here
+                                },
+                                style: ButtonStyle(
+                                  overlayColor: MaterialStateProperty.all(Colors.transparent),
+                                ),
+                                child: const Text(
+                                  Constants.forgotButtonText,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Container(
+                              alignment: Alignment.bottomCenter,
+                              child: BlocListener<LoginCubit, LoginState>(
+                                listener: (context, state) async {
+                                  switch (state.status) {
+                                    case LoginStatus.emptyFieldError:
+                                      Util.errorSnackBar(context, Constants.emptyFieldErrorText);
+                                      break;
+                                    case LoginStatus.emailError:
+                                      Util.errorSnackBar(context, Constants.correctEmailErrorText);
+                                      break;
+                                    case LoginStatus.loginSuccessful:
+                                      Util.submittedSnackBar(context, Constants.userSuccessfullyLoggingText);
+                                      await Future.delayed(const Duration(seconds: 2));
+                                      Util.submittedSnackBar(context, Constants.userLoginInText);
+                                      await Future.delayed(const Duration(seconds: 2));
+                                      Navigator.pushNamed(context, Constants.homeScreenPath); // Home Screen
+                                      break;
+                                    case LoginStatus.loginUnsuccessful:
+                                      Util.errorSnackBar(context, Constants.userUnSuccessfullyLoggingText);
+                                      break;
+                                    default:
+                                      Util.errorSnackBar(context, Constants.unknownErrorText);
+                                      break;
+                                  }
+                                },
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                                      backgroundColor: Colors.greenAccent[700],
+                                    ),
+                                    child: const Text(Constants.loginButtonText,
+                                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                                    onPressed: () {
+                                      context
+                                          .read<LoginCubit>()
+                                          .validateUserLogging(email, password);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  Constants.doNotHaveAccountText,
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, Constants.registerScreenPath);
+                                  },
+                                  style: ButtonStyle(
+                                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                                  ),
+                                  child: const Text(
+                                    Constants.signupButtonText,
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
-                      SizedBox(height: 30),
-                      Container(
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 34,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                shadowColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5))),
-                                elevation: 10,
-                                backgroundColor: Colors.white,
-                              ),
-                              child: Text(Constants.registerButtonText,
-                                  style: TextStyle(
-                                      color: Colors.green, fontSize: 20)),
-                              onPressed: () {
-                                Navigator.pushNamed(context,
-                                    Constants.emailVerificationScreenPath); //register
-                              }),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-            );
-          } else {
-            return InternetDisconnectionScreen();
-          }
-        },
-      )),
+              );
+            } else {
+              return const InternetDisconnectionScreen();
+            }
+          },
+        ),
+      ),
     );
   }
 }
