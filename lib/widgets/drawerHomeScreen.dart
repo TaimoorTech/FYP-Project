@@ -16,69 +16,103 @@ class homeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.white,
       child: Column(
         children: [
+          Padding(padding:  const EdgeInsets.only(top: 20.0)),
           Container(
             child: Padding(
-              padding: const EdgeInsets.only(top: 50.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                    const Icon(CupertinoIcons.profile_circled, size: 100, color: Colors.white,),
-                    const SizedBox(height: 20.0,),
-                    Text(loggedUsername,
-                        style: const TextStyle(color: Colors.white,
-                            fontWeight: FontWeight.bold, fontSize: 20)),
+                    const SizedBox(width: 10.0,),
+                    const Icon(CupertinoIcons.profile_circled, size: 50, color: Colors.black,),
+                    const SizedBox(width: 10.0,),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                      Text(loggedUsername,
+                          style: const TextStyle(color: Colors.black,
+                              fontWeight: FontWeight.bold, fontSize: 20)),
+                      Text(loggedEmail,
+                          style: const TextStyle(color: Colors.black, fontSize: 15)),
+                    ],
+                    ),
+
                 ],
               ),
             ),
           ),
-
-          const SizedBox(height: 20.0,),
+          const SizedBox(height: 30.0,),
           const Divider(
-            color: Colors.white,
-            thickness: 2.5,
+            color: Colors.black,
+            thickness: 1.5,
             height: 0,
           ),
+          const SizedBox(height: 5.0,),
+          // ListTile(
+          //   title: const Text(Constants.homeDrawerOptionsText,
+          //       style: TextStyle(fontSize: 20, color: Colors.white,
+          //       fontWeight: FontWeight.bold)
+          //   ),
+          //   onTap: (){},
+          // ),
           ListTile(
-            title: const Text(Constants.homeDrawerOptionsText,
-                style: TextStyle(fontSize: 20, color: Colors.white,
-                fontWeight: FontWeight.bold)
-            ),
-            onTap: (){},
-          ),
-          ListTile(
-            leading: const Icon(CupertinoIcons.profile_circled, color: Colors.white),
+            leading: const Icon(Icons.manage_accounts_rounded, color: Colors.black, size: 15),
             title: const Text(Constants.profileButtonText,
-                style: TextStyle(fontSize: 15, color: Colors.white)
+                style: TextStyle(fontSize: 15, color: Colors.black)
             ),
+            trailing: const Icon(Icons.arrow_forward_ios_rounded, color: Colors.black, size: 15,),
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (_) =>
                   ProfileScreen(loggedUsername: loggedUsername, loggedEmail: loggedEmail,)));
             },
           ),
           const SizedBox(height: 5.0,),
-          ListTile(
-            leading: const Icon(Icons.report_sharp, color: Colors.white),
-            title: const Text(Constants.reportButtonText,
-                style: TextStyle(fontSize: 15, color: Colors.white)
+          Align(child: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text("Preferences",
+                style: TextStyle(fontSize: 13)),
+          ), alignment: Alignment.centerLeft,),
+          SizedBox(
+            height: 40,
+            child: ListTile(
+              leading: const Icon(Icons.report_sharp, color: Colors.black, size: 15),
+              title: const Text(Constants.reportButtonText,
+                  style: TextStyle(fontSize: 15, color: Colors.black)
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios_rounded, color: Colors.black, size: 15,),
+              onTap: (){
+                Navigator.pushNamed(context, Constants.reportComplaintScreenPath);
+              },
             ),
-            onTap: (){
-              Navigator.pushNamed(context, Constants.reportComplaintScreenPath);
-            },
           ),
-          const SizedBox(height: 5.0,),
-          ListTile(
-            leading: const Icon(Icons.logout_sharp, color: Colors.white),
-            title: const Text(Constants.logOutButtonText, 
-                style: TextStyle(fontSize: 15, color: Colors.white)),
-            onTap: () async {
-              Util.submittedSnackBar(context, Constants.userLogOutText);
-              await SQLHelper.deleteItem(loggedEmail);
-              Navigator.pushNamed(context, Constants.loginScreenPath);
-            },
+          SizedBox(
+            height: 40,
+            child: ListTile(
+              leading: const Icon(Icons.support_agent_sharp, color: Colors.black, size: 15),
+              title: const Text(Constants.contactSupportButtonText,
+                  style: TextStyle(fontSize: 15, color: Colors.black)),
+              trailing: const Icon(Icons.arrow_forward_ios_rounded, color: Colors.black, size: 15,),
+              onTap: () async {},
+            ),
+          ),
+          const SizedBox(height: 10,),
+          SizedBox(
+            height: 40,
+            child: ListTile(
+              leading: const Icon(Icons.logout_sharp, color: Colors.black, size: 15),
+              title: const Text(Constants.logOutButtonText,
+                  style: TextStyle(fontSize: 15, color: Colors.black)),
+              trailing: const Icon(Icons.arrow_forward_ios_rounded, color: Colors.black, size: 15,),
+              onTap: () async {
+                Util.submittedSnackBar(context, Constants.userLogOutText);
+                await SQLHelper.deleteItem(loggedEmail);
+                Navigator.pushNamed(context, Constants.loginScreenPath);
+              },
+            ),
           ),
         ],
       ),
