@@ -1,12 +1,10 @@
 import 'dart:math';
-
 import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fyp_project/bloc/internetBloc/internetCubit.dart';
 import 'package:fyp_project/dataSources/cloudDatabase/signupDatabase.dart';
 import 'package:fyp_project/pages/registerScreen.dart';
-
 import '../bloc/registerBloc/registerCubit.dart';
 import '../emailVerification/emailVerificationService.dart';
 import '../modelClasses/userModel.dart';
@@ -16,7 +14,16 @@ import '../utils/util.dart';
 import 'InternetDisconnectionScreen.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
-  const EmailVerificationScreen({super.key});
+  final String name;
+  final String email;
+  final String password;
+
+  const EmailVerificationScreen({
+    super.key,
+    required this.name,
+    required this.email,
+    required this.password,
+  });
 
   @override
   State<EmailVerificationScreen> createState() =>
@@ -24,45 +31,35 @@ class EmailVerificationScreen extends StatefulWidget {
 }
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
-
-  String email = " ";
   String verificationCode = " ";
   String generatedVerificationCode = " ";
   static late EmailAuth emailAuth;
 
-
   static final _random = Random();
-  static TextEditingController emailTextController = TextEditingController();
-  static TextEditingController verificationCodeTextController = TextEditingController();
+  final TextEditingController verificationCodeTextController = TextEditingController();
 
   static String _generateVerificationCode() {
-    // You can customize the length and format of the verification code
     return _random.nextInt(999999).toString().padLeft(6, '0');
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    emailTextController.text="";
-    verificationCodeTextController.text="";
-    email="";
-    verificationCode="";
-    generatedVerificationCode="";
+    verificationCodeTextController.text = "";
+    verificationCode = "";
+    generatedVerificationCode = "";
   }
 
   Future<bool> _onBackPressed() async {
-    Navigator.pushNamed(context, Constants.loginScreenPath);
+    Navigator.pushNamed(context, Constants.registerScreenPath);
     return Future.value(true);
   }
 
-
-
-  static void sentOTP(BuildContext context) async {
+  void sendOTP() async {
     emailAuth = EmailAuth(
       sessionName: "Test Session",
     );
-    bool result = await emailAuth.sendOtp(recipientMail: emailTextController.value.text, otpLength: 5);
+    bool result = await emailAuth.sendOtp(recipientMail: widget.email, otpLength: 5);
     if (result) {
       Util.submittedSnackBar(context, 'Message sent: ');
     } else {
@@ -72,29 +69,42 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
   void verifyOTP(BuildContext context) {
     var res = emailAuth.validateOtp(
-        recipientMail: emailTextController.text.toString(),
+        recipientMail: widget.email,
         userOtp: verificationCodeTextController.text.toString());
-    if(res){
+    if (res) {
       Util.submittedSnackBar(context, 'OTP Verified');
-    }
-    else{
+      _registerUser();
+    } else {
       Util.errorSnackBar(context, 'Invalid OTP');
     }
   }
 
+  void _registerUser() async {
+    User newUser = User(
+      username: widget.name,
+      email: widget.email,
+      password: widget.password,
+    );
+    await SignupDatabase.addData(newUser);
+    Navigator.pushNamed(context, Constants.homeScreenPath);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return await _onBackPressed();
-      },
-      child: SafeArea(child: BlocBuilder<InternetCubit, InternetState>(
-        builder: (context, state) {
-          if ((state is InternetConnected) &&
-              (state.connectionType == ConnectionType.Wifi || state.connectionType == ConnectionType.Mobile))
-          {
-            return Scaffold(
+    return PopScope(
+        canPop: false,
+        onPopInvoked: ((didpop) {
+          if (didpop){
+            return;
+          }
+          _onBackPressed();
+        }),
+      child: SafeArea(
+        child: BlocBuilder<InternetCubit, InternetState>(
+          builder: (context, state) {
+            if (state is InternetConnected &&
+                (state.connectionType == ConnectionType.Wifi || state.connectionType == ConnectionType.Mobile)) {
+              return Scaffold(
                 body: Container(
                   padding: const EdgeInsets.all(20.0),
                   alignment: Alignment.topCenter,
@@ -106,153 +116,110 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          alignment: Alignment.center,
-                          child: Image.asset(Constants.appIcon,
-                              height: 60, width: 60, fit: BoxFit.cover),
-                        ),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        Text(Constants.verifyEmailAddressText,
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold)),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          keyboardType: TextInputType.emailAddress,
-                          maxLength: 35,
-                          maxLines: 1,
-                          controller: emailTextController,
-                          decoration: const InputDecoration(
-                              labelStyle:
-                              TextStyle(color: Colors.black, fontSize: 14),
-                              labelText: Constants.emailTextField,
-                              suffixIcon: Icon(Icons.email_sharp),
-                              suffixIconColor: Colors.black),
-                          onChanged: (val) => {email = val},
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          maxLength: 6,
-                          maxLines: 1,
-                          controller: verificationCodeTextController,
-                          decoration: const InputDecoration(
-                              labelStyle:
-                              TextStyle(color: Colors.black, fontSize: 14),
-                              labelText: Constants.verificationCodeTextField,
-                              suffixIcon: Icon(Icons.verified_user_sharp),
-                              suffixIconColor: Colors.black),
-                          onChanged: (val) => {verificationCode = val.trim()},
-                        ),
-                        const SizedBox(
-                          height: 70,
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 34,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shadowColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                                  elevation: 10,
-                                  backgroundColor: Colors.green,
-                                ),
-                                child: Text(Constants.getVerificationCodeButtonText,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20)),
-                                onPressed: () async {
-                                      generatedVerificationCode = _generateVerificationCode();
-                                      await EmailVerificationService.sendVerificationCode(context, email, generatedVerificationCode);
-                                      // sentOTP(context);
-                                }),
+                        Center(
+                          child: Image.asset(
+                            Constants.appIcon,
+                            height: 60,
+                            width: 60,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(
-                          height: 70,
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 34,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shadowColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                                  elevation: 10,
-                                  backgroundColor: Colors.green,
-                                ),
-                                child: Text(Constants.confirmVerificationCodeButtonText,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20)),
-                                onPressed: () async {
-                                  bool userExisted = false;
-                                  List<User> list = await SignupDatabase.fetchAllData();
-                                  if(emailTextController.text.trim().toString()=="" ||
-                                    verificationCodeTextController.text.trim().toString()==""
-                                  ){
-                                    Util.errorSnackBar(context, Constants.emptyFieldErrorText);
-                                  }
-                                  else{
-                                    for(final row in list){
-                                      if(emailTextController.text.trim()==row.email.trim()){
-                                        userExisted=true;
-                                        break;
-                                      }
-                                    }
-                                    if(userExisted==true){
-                                      Util.errorSnackBar(context, Constants.userAlreadyExists);
-                                      setState(() {
-                                        emailTextController.text="";
-                                        email="";
-                                        verificationCodeTextController.text="";
-                                        verificationCode="";
-                                        generatedVerificationCode="";
-                                      });
-                                    }
-                                    else if( (userExisted==false) &&
-                                        (verificationCode==generatedVerificationCode)
-                                    ){
-                                      Util.submittedSnackBar(context, Constants.confirmedVerificationCode);
-                                      Future.delayed(Duration(seconds: 2));
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context) => BlocProvider(
-                                            create: (context) => RegisterCubit(),
-                                            child: RegisterScreen(confirmed_email: emailTextController.text),
-                                          )
-                                      ));//Register Screen
-                                    }
-                                    else{
-                                      Util.errorSnackBar(context, Constants.wrongVerificationCode);
-                                    }
-                                  }
-                                }),
+                        const SizedBox(height: 25),
+                        Text(
+                          Constants.verifyEmailAddressText,
+                          style: const TextStyle(
+                            color: Colors.green,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
+                        const SizedBox(height: 15),
+                        _buildVerificationCodeTextField(),
+                        const SizedBox(height: 70),
+                        _buildGetVerificationCodeButton(context),
+                        const SizedBox(height: 70),
+                        _buildConfirmVerificationCodeButton(context),
                       ],
                     ),
                   ),
-                )
-            );
-          }
-          else{
-            return InternetDisconnectionScreen();
-          }
-        },
-      )),
+                ),
+              );
+            } else {
+              return const InternetDisconnectionScreen();
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVerificationCodeTextField() {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      maxLength: 6,
+      maxLines: 1,
+      controller: verificationCodeTextController,
+      decoration: const InputDecoration(
+        labelStyle: TextStyle(color: Colors.black, fontSize: 14),
+        labelText: Constants.verificationCodeTextField,
+        suffixIcon: Icon(Icons.verified_user_sharp),
+        suffixIconColor: Colors.black,
+      ),
+      onChanged: (val) => {verificationCode = val.trim()},
+    );
+  }
+
+  Widget _buildGetVerificationCodeButton(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: SizedBox(
+        width: double.infinity,
+        height: 34,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shadowColor: Colors.white,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+            ),
+            elevation: 10,
+            backgroundColor: Colors.green,
+          ),
+          child: const Text(
+            Constants.getVerificationCodeButtonText,
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () async {
+            generatedVerificationCode = _generateVerificationCode();
+            await EmailVerificationService.sendVerificationCode(context, widget.email, generatedVerificationCode);
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildConfirmVerificationCodeButton(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: SizedBox(
+        width: double.infinity,
+        height: 34,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shadowColor: Colors.white,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5))),
+            elevation: 10,
+            backgroundColor: Colors.green,
+          ),
+          child: const Text(
+            Constants.confirmVerificationCodeButtonText,
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            verifyOTP(context);
+          },
+        ),
+      ),
     );
   }
 }

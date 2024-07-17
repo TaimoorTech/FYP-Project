@@ -1,41 +1,45 @@
 part of 'registerCubit.dart';
 
-class RegisterState{
-  String username;
-  String email;
-  String password;
-  String confirmPassword;
+/// Enum representing the different statuses of the registration form.
+enum RegisterStatus {
+  initial,
+  emptyFieldError,
+  emailError,
+  passwordMatchError,
+  passwordLengthError,
+  submitted,
+  unsubmitted,
+}
+
+/// Base state class for registration, containing user input data.
+class RegisterState {
+  final String username;
+  final String email;
+  final String password;
+  final String confirmPassword;
+  final RegisterStatus status;
 
   RegisterState({
-    required this.username,
-    required this.email,
-    required this.password,
-    required this.confirmPassword
+    this.username = '',
+    this.email = '',
+    this.password = '',
+    this.confirmPassword = '',
+    this.status = RegisterStatus.initial,
   });
 
-}
-
-class EmptyFieldState extends RegisterState{
-  EmptyFieldState({required super.username, required super.email, required super.password, required super.confirmPassword});
-}
-
-class EmailErrorState extends RegisterState{
-  EmailErrorState({required super.username, required super.email, required super.password, required super.confirmPassword});
-}
-
-class PasswordMatchErrorState extends RegisterState{
-  PasswordMatchErrorState({required super.username, required super.email, required super.password, required super.confirmPassword});
-}
-
-class PasswordLengthErrorState extends RegisterState{
-  PasswordLengthErrorState({required super.username, required super.email, required super.password, required super.confirmPassword});
-}
-
-
-class SubmittedState extends RegisterState{
-  SubmittedState({required super.username, required super.email, required super.password, required super.confirmPassword});
-}
-
-class UnSubmittedState extends RegisterState{
-  UnSubmittedState({required super.username, required super.email, required super.password, required super.confirmPassword});
+  RegisterState copyWith({
+    String? username,
+    String? email,
+    String? password,
+    String? confirmPassword,
+    RegisterStatus? status,
+  }) {
+    return RegisterState(
+      username: username ?? this.username,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      confirmPassword: confirmPassword ?? this.confirmPassword,
+      status: status ?? this.status,
+    );
+  }
 }

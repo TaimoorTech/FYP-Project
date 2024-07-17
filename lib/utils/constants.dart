@@ -47,36 +47,43 @@ class Constants {
   static const String userUnSuccessfullyLoggingText = "Login Failed. Wrong Email or Username...";
   static const String userLoginInText = "Logging In...";
   static const String userLogOutText = "Logging Out...";
+  static const String unknownErrorText = "An unknown error occurred. Please try again.";
 
   //screenTexts
   static const String createAccountText= "Create Account";
-  static const String verifyEmailAddressText= "Verify Your Email Adress";
+  static const String verifyEmailAddressText= "Verify Your Email Address";
   static const String alreadyAccountText = "Already have an Account?";
-  static const String doNotHaveAccountText = "Don't have a SafeNav Account?";
+  static const String enterotpText = "Enter the OTP sent to your email:";
+  static const String doNotHaveAccountText = "Don't have an account?";
+  static const String doNotReceiveOtpButtonText = "Didn't receive the OTP?";
   static const String registerNowText = "Register Now";
   static const String loginText = "Login";
   static const String homeScreenText = "Home Screen";
   static const String homeDrawerOptionsText = "Options";
 
   //ButtonTexts
-  static const String registerButtonText = "Register";
+  static const String signupButtonText = "Sign up";
   static const String loginButtonText = "Login";
+  static const String forgotButtonText = "Forgot Password?";
   static const String logOutButtonText = "Log Out";
   static const String profileButtonText = "Profile";
   static const String reportButtonText = "Report Complaint";
+  static const String verifyOtpButtonText = "Verify OTP";
+  static const String resendButtonText = "Resend";
   static const String getVerificationCodeButtonText = "Get Verification Code";
   static const String confirmVerificationCodeButtonText = "Confirm Verification Code";
 
   //textFields
-  static const String usernameTextField = "Enter UserName";
-  static const String emailTextField = "Enter Email";
-  static const String passwordTextField = "Enter Password";
+  static const String usernameTextField = "UserName";
+  static const String emailTextField = "Email Address";
+  static const String passwordTextField = "Password";
   static const String passwordHelperText = "Password Length must be equal or greater than 8";
-  static const String confirmPasswordTextField = "Enter Confirm Password";
+  static const String confirmPasswordTextField = "Confirm Password";
   static const String verificationCodeTextField = "Enter Verification Code";
 
   //Icons
   static const String appIcon = 'images/appIcon.png';
+  static const String backgroundImage = 'images/background.png';
   static const String wifiDisconnectedIcon = 'images/wifi_Disconnected.png';
 
   //Screen Paths
@@ -87,4 +94,5 @@ class Constants {
   static const String homeScreenPath = '/home';
   static const String profileScreenPath = "/profile";
   static const String reportComplaintScreenPath = "/report";
+  static const String otpScreenPath = "/otp";
 }
