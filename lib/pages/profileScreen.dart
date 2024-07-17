@@ -55,7 +55,7 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(
-                      height: 50,
+                      height: 30,
                     ),
                     // Align(alignment: Alignment.center,
                     //     child: Text(loggedUsername, style: TextStyle(fontSize: 20),)),
@@ -73,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold),
                         )),
                     const SizedBox(
-                      height: 40,
+                      height: 20,
                     ),
                     InputDecorator(
                       decoration: InputDecoration(
@@ -94,7 +94,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 50,
+                      height: 30,
                     ),
                     InputDecorator(
                       decoration: InputDecoration(
