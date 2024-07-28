@@ -36,8 +36,16 @@ class homeDrawer extends StatelessWidget {
                       Text(loggedUsername,
                           style: const TextStyle(color: Colors.black,
                               fontWeight: FontWeight.bold, fontSize: 20)),
-                      Text(loggedEmail,
-                          style: const TextStyle(color: Colors.black, fontSize: 15)),
+                      SizedBox(
+                        width: 200,
+                        child: RichText(
+                          maxLines: null,
+                          text: TextSpan(
+                                text: loggedEmail,
+                                style: const TextStyle(color: Colors.black, fontSize: 15)
+                          ),
+                        ),
+                      )
                     ],
                     ),
 
@@ -87,16 +95,6 @@ class homeDrawer extends StatelessWidget {
               onTap: (){
                 Navigator.pushNamed(context, Constants.reportComplaintScreenPath);
               },
-            ),
-          ),
-          SizedBox(
-            height: 40,
-            child: ListTile(
-              leading: const Icon(Icons.support_agent_sharp, color: Colors.black, size: 15),
-              title: const Text(Constants.contactSupportButtonText,
-                  style: TextStyle(fontSize: 15, color: Colors.black)),
-              trailing: const Icon(Icons.arrow_forward_ios_rounded, color: Colors.black, size: 15,),
-              onTap: () async {},
             ),
           ),
           const SizedBox(height: 10,),
